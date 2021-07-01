@@ -1,0 +1,125 @@
+openapi: "3.0.0"
+info:
+  title: acct-api
+  version: "1.0.0"
+servers:
+  - url: http://127.0.0.1/api-v1
+    description: local
+  - url: https://hihi-uat.notfound.com/api-v1
+    description: uat
+  - url: https://hihi.notfound.com/api-v1
+    description: production
+paths:
+  /health:
+    get:
+      x-should-check-jwt: false
+      description: health check resources status
+      operationId: HealthCheck
+      responses:
+        200:
+          description: Success
+  /mstr:
+    get:
+      x-should-check-jwt: false
+      description: get mstr
+      operationId: GetMstr
+      parameters:
+        - $ref: "#/components/parameters/mstrFilter"
+      responses:
+        200:
+          description: Success
+  /test:
+    get:
+      x-should-check-jwt: false
+      description: Test Database
+      operationId: TestDatabase
+      responses:
+        200:
+          description: Success
+  /tx:
+    get:
+      x-should-check-jwt: false
+      tags:
+        - tx
+      operationId: GetTxList
+      description: Get transaction list
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/dateFrom"
+        - $ref: "#/components/parameters/dateTo"
+      responses:
+        200:
+          description: Success
+    post:
+      tags:
+        - tx
+      operationId: AddTxList
+      description: Add new transaction
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/txDate"
+        - $ref: "#/components/parameters/payFrom"
+        - $ref: "#/components/parameters/payTo"
+        - $ref: "#/components/parameters/paymentType"
+        - $ref: "#/components/parameters/txAmt"
+      requestBody:
+        description: Transaction details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TxModel"
+      responses:
+        200:
+          description: Success
+
+components:
+  parameters:
+    userId:
+      name: userId
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    dateFrom:
+      name: dateFrom
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    dateTo:
+      name: dateTo
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    txDate:
+      name: txDate
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    payFrom:
+      name: payFrom
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    payTo:
+      name: payTo
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    paymentType:
+      name: paymentType
+      in: query
+      schema:
+        type: string
+        maxLength: 10
+    txAmt:
+      name: txAmt
+      in: query
+      schema:
+        type: string
+        maxLength: 10
